@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { agentColor } from "../lib/constants";
+import { agentColor, agentEmoji } from "../lib/constants";
 import type { PaneStatus } from "../lib/types";
 
 const STATUS_FX: Record<PaneStatus, { color: string; aura: number; sparkle: boolean; typing: boolean }> = {
@@ -20,6 +20,7 @@ interface AgentAvatarProps {
 
 export const AgentAvatar = memo(function AgentAvatar({ name, target, status, preview, accent, saiyan, onClick }: AgentAvatarProps) {
   const color = agentColor(name);
+  const emoji = agentEmoji(name);
   const fx = STATUS_FX[status];
   const filterId = `glow-${target.replace(/[^a-z0-9]/gi, "-")}`;
   const auraId = `aura-${target.replace(/[^a-z0-9]/gi, "-")}`;
@@ -219,6 +220,14 @@ export const AgentAvatar = memo(function AgentAvatar({ name, target, status, pre
       {/* Mic boom */}
       <line x1={-19} y1={-10} x2={-14} y2={-2} stroke="#555" strokeWidth={1.2} />
       <circle cx={-13} cy={-1} r={1.5} fill="#666" />
+
+      {/* Norse emoji badge (floating above head) */}
+      {emoji && (
+        <text x={0} y={-46} textAnchor="middle" fontSize={14}
+          style={{ filter: `drop-shadow(0 0 4px ${color})` }}>
+          {emoji}
+        </text>
+      )}
 
       {/* === ARMS === */}
       {fx.typing ? (

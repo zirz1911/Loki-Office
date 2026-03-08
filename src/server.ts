@@ -148,7 +148,7 @@ export function startServer(port = +(process.env.MAW_PORT || 3456)) {
     },
   });
 
-  console.log(`maw serve → http://localhost:${port} (ws://localhost:${port}/ws)`);
+  console.log(`🔮 loki-office → http://localhost:${port} (ws://localhost:${port}/ws)`);
   return server;
 }
 

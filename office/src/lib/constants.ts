@@ -1,20 +1,20 @@
 export const SVG_WIDTH = 1280;
 export const SVG_HEIGHT = 900;
 
-// Session group → room mapping
+// Norse realm → room mapping (keyed by tmux session name)
 export const ROOM_COLORS: Record<string, { accent: string; floor: string; wall: string; label: string }> = {
-  "0":          { accent: "#26c6da", floor: "#1a2228", wall: "#0e1a20", label: "Main" },
-  "1-oracles":  { accent: "#7e57c2", floor: "#1a1428", wall: "#120e1e", label: "Oracles" },
-  "2-arra":     { accent: "#42a5f5", floor: "#141a28", wall: "#0e1420", label: "Arra" },
-  "3-brewing":  { accent: "#ffa726", floor: "#281e14", wall: "#201810", label: "Brewing" },
-  "4-watchers": { accent: "#4caf50", floor: "#142818", wall: "#0e2010", label: "Watchers" },
-  "5-tools":    { accent: "#ef5350", floor: "#281418", wall: "#200e12", label: "Tools" },
-  "6-solar":    { accent: "#fdd835", floor: "#282814", wall: "#20200e", label: "Solar" },
+  "loki-oracle": { accent: "#c9a227", floor: "#1e1a08", wall: "#141002", label: "Asgard" },
+  "midgard":     { accent: "#4caf50", floor: "#0e1a0e", wall: "#081408", label: "Midgard" },
+  "jotunheim":   { accent: "#42a5f5", floor: "#0e1428", wall: "#080e1e", label: "Jotunheim" },
+  "niflheim":    { accent: "#90caf9", floor: "#0a1020", wall: "#060a14", label: "Niflheim" },
+  "muspelheim":  { accent: "#ef5350", floor: "#28100e", wall: "#200808", label: "Muspelheim" },
+  "vanaheim":    { accent: "#26c6da", floor: "#0e1e20", wall: "#081618", label: "Vanaheim" },
+  "alfheim":     { accent: "#ce93d8", floor: "#1a0e28", wall: "#120820", label: "Alfheim" },
 };
 
 const FALLBACK_ROOMS = [
-  { accent: "#ab47bc", floor: "#1e1428", wall: "#160e1e", label: "Room" },
-  { accent: "#ec407a", floor: "#281420", wall: "#200e18", label: "Room" },
+  { accent: "#ab47bc", floor: "#1e1428", wall: "#160e1e", label: "Realm" },
+  { accent: "#ec407a", floor: "#281420", wall: "#200e18", label: "Realm" },
 ];
 
 export function roomStyle(sessionName: string) {
@@ -24,7 +24,19 @@ export function roomStyle(sessionName: string) {
   return FALLBACK_ROOMS[Math.abs(h) % FALLBACK_ROOMS.length];
 }
 
-// Agent capsule colors (deterministic by name hash)
+// Norse agent identity — name → { color, emoji }
+export const NORSE_AGENTS: Record<string, { color: string; emoji: string }> = {
+  "odin":     { color: "#f5c518", emoji: "👁️" },
+  "thor":     { color: "#4fc3f7", emoji: "⚡" },
+  "loki":     { color: "#a855f7", emoji: "🔮" },
+  "heimdall": { color: "#14b8a6", emoji: "🌈" },
+  "tyr":      { color: "#ef4444", emoji: "⚔️" },
+  "ymir":     { color: "#94a3b8", emoji: "🏔️" },
+  "huginn":   { color: "#3b82f6", emoji: "🦅" },
+  "muninn":   { color: "#6366f1", emoji: "🪶" },
+};
+
+// Fallback palette for non-Norse agents
 export const AGENT_COLORS = [
   "#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#ffa07a",
   "#dda0dd", "#98d8c8", "#f7dc6f", "#bb8fce", "#85c1e9",
@@ -32,9 +44,16 @@ export const AGENT_COLORS = [
 ];
 
 export function agentColor(name: string): string {
+  const key = name.toLowerCase().replace(/-oracle$/, "");
+  if (NORSE_AGENTS[key]) return NORSE_AGENTS[key].color;
   let h = 0;
   for (let i = 0; i < name.length; i++) h = ((h << 5) - h + name.charCodeAt(i)) | 0;
   return AGENT_COLORS[Math.abs(h) % AGENT_COLORS.length];
+}
+
+export function agentEmoji(name: string): string {
+  const key = name.toLowerCase().replace(/-oracle$/, "");
+  return NORSE_AGENTS[key]?.emoji ?? "";
 }
 
 // Desk grid within each room

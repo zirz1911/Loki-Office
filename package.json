@@ -1,19 +1,18 @@
 {
-  "name": "maw",
-  "version": "1.1.0",
+  "name": "loki-office",
+  "version": "1.0.0",
   "type": "module",
   "bin": {
-    "maw": "./src/cli.ts"
+    "loki-office": "./src/cli.ts"
   },
   "scripts": {
     "build:office": "cd office && bunx vite build",
-    "dev": "pm2 start ecosystem.config.cjs && echo '→ maw backend (watch src/) on :3456\n→ maw-dev vite HMR on :5173\n→ pm2 logs to follow'",
+    "dev": "pm2 start ecosystem.config.cjs && echo '→ loki-office backend (watch src/) on :3456\n→ loki-office-dev vite HMR on :5173\n→ pm2 logs to follow'",
     "dev:office": "cd office && bunx vite",
-    "dev:stop": "pm2 delete maw maw-dev 2>/dev/null; echo '→ dev stopped'",
-    "deploy": "bun install && bun run build:office && pm2 delete maw-dev 2>/dev/null; pm2 restart maw",
-    "deploy:remote": "bun run build:office && rsync -az dist-office/ white.local:~/Code/github.com/Soul-Brews-Studio/maw-js/dist-office/ && rsync -az src/ white.local:~/Code/github.com/Soul-Brews-Studio/maw-js/src/ && ssh white.local 'export PATH=$HOME/.bun/bin:$PATH && pm2 restart maw' && echo '→ deployed to white.local:3456'"
+    "dev:stop": "pm2 delete loki-office loki-office-dev 2>/dev/null; echo '→ dev stopped'",
+    "deploy": "bun install && bun run build:office && pm2 delete loki-office-dev 2>/dev/null; pm2 restart loki-office"
   },
-  "description": "maw.js — Multi-Agent Workflow in Bun/TS. Remote tmux orchestra control. CLI + Web UI.",
+  "description": "Loki Office — Multi-Agent Workflow UI for Loki-Oracle. tmux orchestra control. CLI + Web UI.",
   "dependencies": {
     "hono": "^4.12.5",
     "react": "^19.0.0",
