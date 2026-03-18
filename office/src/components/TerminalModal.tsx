@@ -111,6 +111,11 @@ export function TerminalModal({ agent, send, onClose, onNavigate, onSelectSiblin
     if (text) setInputBuf((b) => b + text);
   }, []);
 
+  const sendKey = useCallback((seq: string) => {
+    send({ type: "send", target: agent.target, text: seq });
+    setTimeout(() => inputRef.current?.focus(), 0);
+  }, [agent.target, send]);
+
   const displayName = cleanName(agent.name);
 
   return (
@@ -193,6 +198,27 @@ export function TerminalModal({ agent, send, onClose, onNavigate, onSelectSiblin
               autoFocus
             />
           </div>
+        </div>
+
+        {/* Key buttons */}
+        <div className="flex items-center gap-1.5 px-4 py-1.5 bg-[#0e0e18] border-t border-white/[0.04]">
+          {[
+            { label: "Esc", seq: "\x1b", title: "Escape" },
+            { label: "↑", seq: "\x1b[A", title: "Up" },
+            { label: "↓", seq: "\x1b[B", title: "Down" },
+            { label: "←", seq: "\x1b[D", title: "Left" },
+            { label: "→", seq: "\x1b[C", title: "Right" },
+            { label: "Enter ↵", seq: "\r", title: "Enter" },
+          ].map(({ label, seq, title }) => (
+            <button
+              key={title}
+              onMouseDown={(e) => { e.preventDefault(); sendKey(seq); }}
+              title={title}
+              className="px-2 py-0.5 rounded text-[10px] font-mono text-white/40 bg-white/[0.05] border border-white/[0.08] hover:text-white/75 hover:bg-white/[0.10] hover:border-white/20 active:scale-95 transition-all cursor-pointer select-none"
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@
 set -e
 
 BUN=/home/paji/.bun/bin/bun
+GEMINI=/home/paji/.nvm/versions/node/v22.22.0/bin/gemini
 ORACLE_DIR=/home/paji/Loki-Oracle
 OFFICE_DIR=/home/paji/Project/Loki-Office
 
@@ -19,7 +20,7 @@ else
   tmux send-keys -t loki-oracle:odin "echo '👁️  Odin — Oracle Orchestrator'" Enter
 
   # Add agent windows
-  for agent in thor loki heimdall tyr ymir; do
+  for agent in thor loki heimdall tyr ymir gemini; do
     tmux new-window -t loki-oracle -n "$agent" -c "$ORACLE_DIR"
   done
 
@@ -30,9 +31,12 @@ else
   tmux send-keys -t loki-oracle:tyr      "echo '⚔️  Tyr — Strategic Coder'" Enter
   tmux send-keys -t loki-oracle:ymir     "echo '🏔️  Ymir — Master Builder'"  Enter
 
+  # Start Gemini in sandbox + yolo mode (auto-approve all tools)
+  tmux send-keys -t loki-oracle:gemini "$GEMINI --yolo" Enter
+
   # Focus odin
   tmux select-window -t loki-oracle:odin
-  echo "  ✓ loki-oracle: odin thor loki heimdall tyr ymir"
+  echo "  ✓ loki-oracle: odin thor loki heimdall tyr ymir gemini"
 fi
 
 # ── loki-office session (server) ─────────────────────────────────────────────
